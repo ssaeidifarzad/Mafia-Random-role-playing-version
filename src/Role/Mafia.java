@@ -5,4 +5,9 @@ public class Mafia extends Role {
     public String toString() {
         return "Mafia";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

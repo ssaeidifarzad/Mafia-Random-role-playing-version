@@ -5,4 +5,9 @@ public class Joker extends Role {
     public String toString() {
         return "Joker";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

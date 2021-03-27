@@ -5,4 +5,9 @@ public class Detective extends Role {
     public String toString() {
         return "Detective";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

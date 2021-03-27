@@ -5,4 +5,9 @@ public class Silencer extends Role {
     public String toString() {
         return "Silencer";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

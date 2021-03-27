@@ -6,4 +6,9 @@ public class Bulletproof extends Role {
     public String toString() {
         return "Bulletproof";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

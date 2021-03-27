@@ -5,4 +5,9 @@ public class Villager extends Role {
     public String toString() {
         return "Villager";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

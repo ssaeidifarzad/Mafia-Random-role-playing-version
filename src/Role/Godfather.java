@@ -5,4 +5,9 @@ public class Godfather extends Role {
     public String toString() {
         return "Godfather";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }

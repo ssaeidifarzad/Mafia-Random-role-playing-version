@@ -5,4 +5,9 @@ public class Doctor extends Role {
     public String toString() {
         return "Doctor";
     }
+
+    @Override
+    public void rolePerform() {
+
+    }
 }
