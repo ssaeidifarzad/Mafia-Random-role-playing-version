@@ -6,8 +6,5 @@ public class Joker extends Role {
         return "Joker";
     }
 
-    @Override
-    public void rolePerform() {
 
-    }
 }

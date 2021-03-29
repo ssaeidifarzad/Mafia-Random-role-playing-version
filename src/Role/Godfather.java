@@ -6,8 +6,4 @@ public class Godfather extends Role {
         return "Godfather";
     }
 
-    @Override
-    public void rolePerform() {
-
-    }
 }

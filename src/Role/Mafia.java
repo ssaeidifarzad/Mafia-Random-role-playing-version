@@ -6,8 +6,5 @@ public class Mafia extends Role {
         return "Mafia";
     }
 
-    @Override
-    public void rolePerform() {
 
-    }
 }

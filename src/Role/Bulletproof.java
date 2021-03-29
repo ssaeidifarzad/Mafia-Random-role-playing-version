@@ -7,8 +7,5 @@ public class Bulletproof extends Role {
         return "Bulletproof";
     }
 
-    @Override
-    public void rolePerform() {
 
-    }
 }

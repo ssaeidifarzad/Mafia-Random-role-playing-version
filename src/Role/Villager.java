@@ -6,8 +6,4 @@ public class Villager extends Role {
         return "Villager";
     }
 
-    @Override
-    public void rolePerform() {
-
-    }
 }

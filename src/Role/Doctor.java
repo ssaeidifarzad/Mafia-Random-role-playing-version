@@ -6,8 +6,4 @@ public class Doctor extends Role {
         return "Doctor";
     }
 
-    @Override
-    public void rolePerform() {
-
-    }
 }
