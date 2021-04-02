@@ -6,7 +6,7 @@ import Role.Silencer;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class Play {
+public class Game {
     static Player[] players = new Player[0];
 
     static int day = 1;
