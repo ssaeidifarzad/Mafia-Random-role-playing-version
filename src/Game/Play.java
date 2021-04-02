@@ -14,16 +14,14 @@ public class Play {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         boolean gameCreated = false, gameStarted = false, gameIsRunning = true;
-        boolean vote = false, night, getCommand = true;
-        String command = "";
+        boolean vote, night;
+        String command;
         String survivor = "", mafiaTarget = "", silent = "";
         Player dead = null;
         boolean mafiaTargetDies = true;
         game:
         while (gameIsRunning) {
-            if (getCommand) {
-                command = scanner.next();
-            }
+            command = scanner.next();
             switch (command) {
                 case "create_game":
                     if (!gameCreated) {
@@ -94,6 +92,10 @@ public class Play {
                 System.out.println("election started");
                 while (vote) {
                     command = scanner.nextLine();
+                    if (command.equals("get_game_state")) {
+                        getGameState();
+                        continue;
+                    }
                     if (command.equals("end_vote")) {
                         vote = false;
                     }
@@ -162,6 +164,10 @@ public class Play {
                 }
                 while (night) {
                     command = scanner.nextLine();
+                    if (command.equals("get_game_state")) {
+                        getGameState();
+                        continue;
+                    }
                     if (command.equals("end_night")) {
                         night = false;
                     }
@@ -292,16 +298,15 @@ public class Play {
                                 players[max2].setAlive(false);
                             }
                         }
-                        getCommand = false;
                         clearVotes();
                     }
                 }
 
-                if ((Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) - Player.getMafiaCount() > 1) {
+                if ((Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) - Player.getMafiaCount() > 2) {
                     System.out.println("Villagers won!");
                     gameIsRunning = false;
                 }
-                if (Player.getMafiaCount() - (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) > 1) {
+                if (Player.getMafiaCount() - (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) > 2) {
                     System.out.println("Mafia won!");
                     gameIsRunning = false;
                 }
@@ -321,5 +326,10 @@ public class Play {
         for (Player player : players) {
             player.voteCount = 0;
         }
+    }
+
+    public static void getGameState() {
+        System.out.println("Mafia: " + Player.getMafiaCount());
+        System.out.println("Villagers: " + (Player.getNumOfPlayersWithRole() - Player.getMafiaCount()));
     }
 }
