@@ -16,8 +16,8 @@ public class Game {
         boolean gameCreated = false, gameStarted = false, gameIsRunning = true;
         boolean vote, night;
         String command;
-        String survivor = "", mafiaTarget = "", silent = "";
-        Player dead = null;
+        String survivor, mafiaTarget = "";
+        Player dead = null, silent = null;
         game:
         while (gameIsRunning) {
             command = scanner.next();
@@ -85,14 +85,17 @@ public class Game {
                     } else {
                         System.out.println(mafiaTarget + " survived");
                     }
-                    System.out.println("Silenced " + silent);
+                    if (silent != null) {
+                        System.out.println("Silenced " + silent.getName());
+                    }
                     if (dead != null && dead.getRole().toString().equalsIgnoreCase("Joker")) {
                         System.out.println("Joker won!");
                         break;
                     }
                 }
+                reset();
                 dead = null;
-                silent = "";
+                silent = null;
                 survivor = "";
                 mafiaTarget = "";
                 System.out.println("election started");
@@ -126,6 +129,10 @@ public class Game {
                         }
                         if (players[voterIndex].isSilent()) {
                             System.out.println("voter is silenced");
+                            continue;
+                        }
+                        if (!players[voterIndex].isAlive()) {
+                            System.out.println("voter is dead");
                             continue;
                         }
                         if (!players[selectedIndex].isAlive()) {
@@ -162,6 +169,10 @@ public class Game {
                         }
                         clearVotes();
                     }
+                }
+                if (checkEndCondition()) {
+                    gameIsRunning = false;
+                    continue;
                 }
                 night = true;
                 System.out.println("Night " + day);
@@ -200,12 +211,12 @@ public class Game {
                             System.out.println("user not found");
                             continue;
                         }
-                        if (!players[firstPlayerIndex].isPerformAtNight()) {
-                            System.out.println("user can not wake up during night");
-                            continue;
-                        }
                         if (!players[firstPlayerIndex].isAlive()) {
                             System.out.println("user is dead");
+                            continue;
+                        }
+                        if (!players[firstPlayerIndex].isPerformAtNight()) {
+                            System.out.println("user can not wake up during night");
                             continue;
                         }
                         if (players[firstPlayerIndex].getRole().toString().equalsIgnoreCase("Silencer") && !((Silencer) players[firstPlayerIndex].getRole()).isVoting()) {
@@ -214,7 +225,7 @@ public class Game {
                                 continue;
                             }
                             players[secondPlayerIndex].setSilent(true);
-                            silent = players[secondPlayerIndex].getName();
+                            silent = players[secondPlayerIndex];
                             ((Silencer) players[firstPlayerIndex].getRole()).voting(true);
                             continue;
                         }
@@ -308,17 +319,10 @@ public class Game {
                             }
                         }
                         clearVotes();
-                        reset();
-                        System.out.println("if you want to continue, enter \"continue\"");
+                        System.out.println("if you want to continue, enter \"continue\". Or you can enter other commands");
                     }
                 }
-
-                if ((Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) - Player.getMafiaCount() > 2) {
-                    System.out.println("Villagers won!");
-                    gameIsRunning = false;
-                }
-                if (Player.getMafiaCount() - (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1) > 2) {
-                    System.out.println("Mafia won!");
+                if (checkEndCondition()) {
                     gameIsRunning = false;
                 }
             }
@@ -352,7 +356,19 @@ public class Game {
             if (player.getRole().toString().equalsIgnoreCase("Silencer")) {
                 ((Silencer) player.getRole()).voting(false);
             }
+            player.setSilent(false);
         }
+    }
 
+    public static boolean checkEndCondition() {
+        if (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() == 0) {
+            System.out.println("Mafia won!");
+            return true;
+        }
+        if (Player.getMafiaCount() == 0) {
+            System.out.println("Villagers won!");
+            return true;
+        }
+        return false;
     }
 }
