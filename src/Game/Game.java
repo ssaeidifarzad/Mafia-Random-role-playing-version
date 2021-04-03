@@ -149,6 +149,10 @@ public class Game {
                             break game;
                         } else {
                             players[max2].setAlive(false);
+                            Player.decreaseNumOfPlayersWithRole();
+                            if (players[max2].isMafia()) {
+                                Player.decreaseMafiaCount();
+                            }
                             System.out.println(players[max2].getName() + " died");
                         }
                         clearVotes();
@@ -275,6 +279,7 @@ public class Game {
                                     }
                                     dead = players[max4];
                                     players[max4].setAlive(false);
+                                    Player.decreaseNumOfPlayersWithRole();
                                     mafiaTargetDies = true;
                                 } else if (survivor.equalsIgnoreCase(players[max4].getName())) {
                                     if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
@@ -283,6 +288,7 @@ public class Game {
                                     }
                                     dead = players[max2];
                                     players[max2].setAlive(false);
+                                    Player.decreaseNumOfPlayersWithRole();
                                     mafiaTargetDies = true;
                                 } else {
                                     mafiaTargetDies = false;
@@ -296,6 +302,7 @@ public class Game {
                                 mafiaTargetDies = true;
                                 dead = players[max2];
                                 players[max2].setAlive(false);
+                                Player.decreaseNumOfPlayersWithRole();
                             }
                         }
                         clearVotes();

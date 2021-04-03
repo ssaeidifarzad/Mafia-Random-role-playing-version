@@ -30,6 +30,14 @@ public class Player {
         return numOfPlayersWithRole;
     }
 
+    public static void decreaseNumOfPlayersWithRole() {
+        numOfPlayersWithRole--;
+    }
+
+    public static void decreaseMafiaCount() {
+        mafiaCount--;
+    }
+
     public boolean setRole(String role) {
         if (role.equalsIgnoreCase("Villager")) {
             this.role = new Villager();
