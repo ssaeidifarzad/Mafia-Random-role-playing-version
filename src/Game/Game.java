@@ -18,7 +18,6 @@ public class Game {
         String command;
         String survivor = "", mafiaTarget = "", silent = "";
         Player dead = null;
-        boolean mafiaTargetDies = true;
         game:
         while (gameIsRunning) {
             command = scanner.next();
@@ -54,12 +53,12 @@ public class Game {
                     }
                     break;
                 case "start_game":
-                    if (Player.getNumOfPlayersWithRole() != players.length) {
-                        System.out.println("one or more players do not have a role");
-                        break;
-                    }
                     if (!gameCreated) {
                         System.out.println("no game created");
+                        break;
+                    }
+                    if (Player.getNumOfPlayersWithRole() != players.length) {
+                        System.out.println("one or more players do not have a role");
                         break;
                     }
                     if (gameStarted) {
@@ -70,6 +69,9 @@ public class Game {
                     for (Player player : players) {
                         System.out.println(player.getName() + ": " + player.getRole().toString());
                     }
+                case "get_game_state":
+                    getGameState();
+                    break;
             }
             if (gameStarted) {
                 vote = true;
@@ -78,13 +80,13 @@ public class Game {
                 } else {
                     System.out.println("Day " + day);
                     System.out.println("mafia tried to kill " + mafiaTarget);
-                    if (mafiaTargetDies) {
+                    if (dead != null) {
                         System.out.println(dead.getName() + " was killed");
                     } else {
                         System.out.println(mafiaTarget + " survived");
                     }
                     System.out.println("Silenced " + silent);
-                    if (dead.getRole().toString().equalsIgnoreCase("Joker")) {
+                    if (dead != null && dead.getRole().toString().equalsIgnoreCase("Joker")) {
                         System.out.println("Joker won!");
                         break;
                     }
@@ -102,7 +104,6 @@ public class Game {
                     if (vote) {
                         String[] names = command.split(" ");
                         if (names.length != 2) {
-                            System.out.println("invalid command");
                             continue;
                         }
                         String firstPlayer = names[0], secondPlayer = names[1];
@@ -270,42 +271,40 @@ public class Game {
                         if (voteCounts[voteCounts.length - 1] == voteCounts[voteCounts.length - 2]) {
                             mafiaTarget = players[max4].getName() + " and " + players[max2].getName();
                             if (voteCounts[voteCounts.length - 2] == voteCounts[voteCounts.length - 3]) {
-                                mafiaTargetDies = false;
+                                dead = null;
                             } else {
                                 if (survivor.equalsIgnoreCase(players[max2].getName())) {
                                     if (players[max4].getRole().toString().equalsIgnoreCase("Bulletproof")) {
-                                        mafiaTargetDies = false;
+                                        dead = null;
                                         continue;
                                     }
                                     dead = players[max4];
                                     players[max4].setAlive(false);
                                     Player.decreaseNumOfPlayersWithRole();
-                                    mafiaTargetDies = true;
                                 } else if (survivor.equalsIgnoreCase(players[max4].getName())) {
                                     if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
-                                        mafiaTargetDies = false;
+                                        dead = null;
                                         continue;
                                     }
                                     dead = players[max2];
                                     players[max2].setAlive(false);
                                     Player.decreaseNumOfPlayersWithRole();
-                                    mafiaTargetDies = true;
                                 } else {
-                                    mafiaTargetDies = false;
+                                    dead = null;
                                 }
                             }
                         } else {
                             mafiaTarget = players[max2].getName();
                             if (survivor.equalsIgnoreCase(players[max2].getName()) || players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
-                                mafiaTargetDies = false;
+                                dead = null;
                             } else {
-                                mafiaTargetDies = true;
                                 dead = players[max2];
                                 players[max2].setAlive(false);
                                 Player.decreaseNumOfPlayersWithRole();
                             }
                         }
                         clearVotes();
+                        System.out.println("if you want to continue, enter \"continue\"");
                     }
                 }
 
