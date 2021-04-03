@@ -69,6 +69,7 @@ public class Game {
                     for (Player player : players) {
                         System.out.println(player.getName() + ": " + player.getRole().toString());
                     }
+                    break;
                 case "get_game_state":
                     getGameState();
                     break;
@@ -95,7 +96,6 @@ public class Game {
                 }
                 reset();
                 dead = null;
-                silent = null;
                 survivor = "";
                 mafiaTarget = "";
                 System.out.println("election started");
@@ -173,6 +173,10 @@ public class Game {
                 if (checkEndCondition()) {
                     gameIsRunning = false;
                     continue;
+                }
+                if (silent != null) {
+                    silent.setSilent(false);
+                    silent = null;
                 }
                 night = true;
                 System.out.println("Night " + day);
@@ -323,7 +327,7 @@ public class Game {
                     }
                 }
                 if (checkEndCondition()) {
-                    gameIsRunning = false;
+                    break;
                 }
             }
         }
@@ -356,7 +360,6 @@ public class Game {
             if (player.getRole().toString().equalsIgnoreCase("Silencer")) {
                 ((Silencer) player.getRole()).voting(false);
             }
-            player.setSilent(false);
         }
     }
 
