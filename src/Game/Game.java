@@ -91,6 +91,10 @@ public class Game {
                         break;
                     }
                 }
+                dead = null;
+                silent = "";
+                survivor = "";
+                mafiaTarget = "";
                 System.out.println("election started");
                 while (vote) {
                     command = scanner.nextLine();
@@ -304,6 +308,7 @@ public class Game {
                             }
                         }
                         clearVotes();
+                        reset();
                         System.out.println("if you want to continue, enter \"continue\"");
                     }
                 }
@@ -337,5 +342,17 @@ public class Game {
     public static void getGameState() {
         System.out.println("Mafia: " + Player.getMafiaCount());
         System.out.println("Villagers: " + (Player.getNumOfPlayersWithRole() - Player.getMafiaCount()));
+    }
+
+    public static void reset() {
+        for (Player player : players) {
+            if (player.getRole().toString().equalsIgnoreCase("Detective")) {
+                ((Detective) player.getRole()).setDetectionLimit(false);
+            }
+            if (player.getRole().toString().equalsIgnoreCase("Silencer")) {
+                ((Silencer) player.getRole()).voting(false);
+            }
+        }
+
     }
 }
