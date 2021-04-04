@@ -1,5 +1,6 @@
 package Game;
 
+import Role.Bulletproof;
 import Role.Detective;
 import Role.Silencer;
 
@@ -294,6 +295,7 @@ public class Game {
                             } else {
                                 if (survivor.equalsIgnoreCase(players[max2].getName())) {
                                     if (players[max4].getRole().toString().equalsIgnoreCase("Bulletproof")) {
+                                        ((Bulletproof) players[max4].getRole()).setShield(false);
                                         dead = null;
                                         continue;
                                     }
@@ -302,6 +304,7 @@ public class Game {
                                     Player.decreaseNumOfPlayersWithRole();
                                 } else if (survivor.equalsIgnoreCase(players[max4].getName())) {
                                     if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
+                                        ((Bulletproof) players[max2].getRole()).setShield(false);
                                         dead = null;
                                         continue;
                                     }
@@ -314,8 +317,11 @@ public class Game {
                             }
                         } else {
                             mafiaTarget = players[max2].getName();
-                            if (survivor.equalsIgnoreCase(players[max2].getName()) || players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
+                            if (survivor.equalsIgnoreCase(players[max2].getName())) {
                                 dead = null;
+                            } else if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof") && ((Bulletproof) players[max2].getRole()).isShield()) {
+                                dead = null;
+                                ((Bulletproof) players[max2].getRole()).setShield(false);
                             } else {
                                 dead = players[max2];
                                 players[max2].setAlive(false);
