@@ -370,7 +370,7 @@ public class Game {
     }
 
     public static boolean checkEndCondition() {
-        if (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() == 0) {
+        if ((Player.getNumOfPlayersWithRole() - 1) - (2 * Player.getMafiaCount()) == 0) {
             System.out.println("Mafia won!");
             return true;
         }

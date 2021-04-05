@@ -1,6 +1,6 @@
 package Role;
 
-public class Bulletproof extends Role {
+public class Bulletproof implements Role {
 private boolean shield;
     @Override
     public String toString() {

@@ -1,6 +1,6 @@
 package Role;
 
-public class Silencer extends Role {
+public class Silencer implements Role {
     private boolean voting = false;
 
     @Override

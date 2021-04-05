@@ -1,6 +1,6 @@
 package Role;
 
-public class Detective extends Role {
+public class Detective implements Role {
     private boolean detectionLimit = false;
 
     @Override

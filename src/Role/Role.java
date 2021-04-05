@@ -1,7 +1,6 @@
 package Role;
 
-public abstract class Role {
-    public abstract String toString();
-
+public interface Role {
+    String toString();
 }
 
