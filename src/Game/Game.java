@@ -1,8 +1,6 @@
 package Game;
 
-import Role.Bulletproof;
-import Role.Detective;
-import Role.Silencer;
+import Role.*;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -90,7 +88,7 @@ public class Game {
                     if (silent != null) {
                         System.out.println("Silenced " + silent.getName());
                     }
-                    if (dead != null && dead.getRole().toString().equalsIgnoreCase("Joker")) {
+                    if (dead != null && dead.getRole() instanceof Joker) {
                         System.out.println("Joker won!");
                         break;
                     }
@@ -157,7 +155,7 @@ public class Game {
                         if (voteCounts[voteCounts.length - 1] == voteCounts[voteCounts.length - 2]) {
                             System.out.println("nobody died");
                             vote = false;
-                        } else if (players[max2].getRole().toString().equals("Joker")) {
+                        } else if (players[max2].getRole() instanceof Joker) {
                             System.out.println("Joker won!");
                             break game;
                         } else {
@@ -224,7 +222,7 @@ public class Game {
                             System.out.println("user can not wake up during night");
                             continue;
                         }
-                        if (players[firstPlayerIndex].getRole().toString().equalsIgnoreCase("Silencer") && !((Silencer) players[firstPlayerIndex].getRole()).isVoting()) {
+                        if (players[firstPlayerIndex].getRole() instanceof Silencer && !((Silencer) players[firstPlayerIndex].getRole()).isVoting()) {
                             if (!players[secondPlayerIndex].isAlive()) {
                                 System.out.println("user is dead");
                                 continue;
@@ -234,8 +232,8 @@ public class Game {
                             ((Silencer) players[firstPlayerIndex].getRole()).voting(true);
                             continue;
                         }
-                        if (players[firstPlayerIndex].getRole().toString().equalsIgnoreCase("Detective")) {
-                            if (((Detective) players[firstPlayerIndex].getRole()).isDetectionLimit()) {
+                        if (players[firstPlayerIndex].getRole() instanceof Detective) {
+                            if (((Detective) players[firstPlayerIndex].getRole()).hasDetectionLimit()) {
                                 System.out.println("detective has already asked");
                                 continue;
                             }
@@ -243,7 +241,7 @@ public class Game {
                                 System.out.println("suspect is dead");
                                 continue;
                             }
-                            if (players[secondPlayerIndex].isMafia() && !players[secondPlayerIndex].getRole().toString().equalsIgnoreCase("Godfather")) {
+                            if (players[secondPlayerIndex].isMafia() && !(players[secondPlayerIndex].getRole() instanceof Godfather)) {
                                 System.out.println("Yes");
                             } else {
                                 System.out.println("No");
@@ -251,7 +249,7 @@ public class Game {
                             ((Detective) players[firstPlayerIndex].getRole()).setDetectionLimit(true);
                             continue;
                         }
-                        if (players[firstPlayerIndex].getRole().toString().equalsIgnoreCase("Doctor")) {
+                        if (players[firstPlayerIndex].getRole() instanceof Doctor) {
                             if (!players[secondPlayerIndex].isAlive()) {
                                 System.out.println("user is dead");
                                 continue;
@@ -294,7 +292,7 @@ public class Game {
                                 dead = null;
                             } else {
                                 if (survivor.equalsIgnoreCase(players[max2].getName())) {
-                                    if (players[max4].getRole().toString().equalsIgnoreCase("Bulletproof")) {
+                                    if (players[max4].getRole() instanceof Bulletproof) {
                                         ((Bulletproof) players[max4].getRole()).setShield(false);
                                         dead = null;
                                         continue;
@@ -303,7 +301,7 @@ public class Game {
                                     players[max4].setAlive(false);
                                     Player.decreaseNumOfPlayersWithRole();
                                 } else if (survivor.equalsIgnoreCase(players[max4].getName())) {
-                                    if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof")) {
+                                    if (players[max2].getRole() instanceof Bulletproof) {
                                         ((Bulletproof) players[max2].getRole()).setShield(false);
                                         dead = null;
                                         continue;
@@ -319,7 +317,7 @@ public class Game {
                             mafiaTarget = players[max2].getName();
                             if (survivor.equalsIgnoreCase(players[max2].getName())) {
                                 dead = null;
-                            } else if (players[max2].getRole().toString().equalsIgnoreCase("Bulletproof") && ((Bulletproof) players[max2].getRole()).isShield()) {
+                            } else if (players[max2].getRole() instanceof Bulletproof && ((Bulletproof) players[max2].getRole()).hasShield()) {
                                 dead = null;
                                 ((Bulletproof) players[max2].getRole()).setShield(false);
                             } else {
@@ -355,22 +353,22 @@ public class Game {
 
     public static void getGameState() {
         System.out.println("Mafia: " + Player.getMafiaCount());
-        System.out.println("Villagers: " + (Player.getNumOfPlayersWithRole() - Player.getMafiaCount()));
+        System.out.println("Villagers: " + (Player.getNumOfPlayersWithRole() - Player.getMafiaCount() - 1));
     }
 
     public static void reset() {
         for (Player player : players) {
-            if (player.getRole().toString().equalsIgnoreCase("Detective")) {
+            if (player.getRole() instanceof Detective) {
                 ((Detective) player.getRole()).setDetectionLimit(false);
             }
-            if (player.getRole().toString().equalsIgnoreCase("Silencer")) {
+            if (player.getRole() instanceof Silencer) {
                 ((Silencer) player.getRole()).voting(false);
             }
         }
     }
 
     public static boolean checkEndCondition() {
-        if ((Player.getNumOfPlayersWithRole() - 1) - (2 * Player.getMafiaCount()) == 0) {
+        if ((Player.getNumOfPlayersWithRole() - 1) - (2 * Player.getMafiaCount()) <= 0) {
             System.out.println("Mafia won!");
             return true;
         }
