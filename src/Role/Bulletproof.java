@@ -7,7 +7,7 @@ private boolean shield;
         return "Bulletproof";
     }
 
-    public boolean isShield() {
+    public boolean hasShield() {
         return shield;
     }
 

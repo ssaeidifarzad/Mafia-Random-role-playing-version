@@ -9,7 +9,7 @@ public class Detective implements Role {
     }
 
 
-    public boolean isDetectionLimit() {
+    public boolean hasDetectionLimit() {
         return detectionLimit;
     }
 
